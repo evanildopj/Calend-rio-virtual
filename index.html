@@ -177,6 +177,7 @@
       cursor: pointer;
     }
     .lock button:hover, .lock button:focus-visible { box-shadow: 0 0 14px rgba(108, 184, 255, .45); outline: none; }
+    .lock-hint { font-size: 12px; color: var(--muted); opacity: .8; }
     .lock-msg { font-size: 12px; color: var(--muted); min-height: 1em; }
 
     .year-block { display: none; }
@@ -423,6 +424,7 @@
         <input id="pw" name="password" type="password" autocomplete="current-password" placeholder="Senha" required />
         <button type="submit">Mostrar</button>
       </form>
+      <p class="lock-hint" id="pw-hint">Dica: senha enviada ao seu celular pelo Claude em 09/10/2026.</p>
       <p class="lock-msg" id="pw-msg" role="status"></p>
       <button type="button" id="relock" hidden>Ocultar agenda da igreja</button>
     </div>
@@ -516,7 +518,7 @@
 
     // Agenda da igreja: criptografada (AES-GCM). Só aparece com a senha.
     // Gerada por tools/agenda_igreja.py — não edite esta linha à mão.
-    const CHURCH_ENC = {"salt": "2cDuVZy/Al13UpYBUr2JRA==", "iter": 250000, "iv": "nP0g7W887rhYoxTs", "data": "4iKiOdnKnIFo2FGLvoN3blo/n+X5pkZJHd18Ivpu/PjZMd7XCPzYE2/BH6g/6O+vjibTrST2BPUD/hupCKinpEOmxvhUxevcLncbswNv7UD2KqPRkbmVbkuf0zlOmXQ8O0GZkEpUhA8+Vv62JLFTiuqpjZhi77u0iyXN2xCyIkbZhsmwhz64HqypeyW+juSA57BFcAkJENuds8KiXDcrPsgURddnrnrISsyjcBga+dCNxF1ZcuLenUC3N6Jl+tFU8xbUqf3jxqUwCEDQYinybMqF/Sl6Ho5FHK9FdhjnCQjaVV1ouqGV72Mc44maSMZ7hzhIPVHLyVMQb8tvMa+9PN2T0crqfa5SATF930gWB5iAQSAIYUbNSotayVefDzqIJ1Je3IPb6BLkMrPT2ve6FXcbIAiR6EUyLye5z8BJuhgvPP/MK+ejs9AsHmvyPF08JXhS1muSDodpcA18KNceH8lzhGhLSJp9d0+hJnGO7JthT7JCi4/cno1SMCTybB9kyO2BJiA4VJjB+i1MRyvuzjQACI9/Sfv9G5KfseK/SN5ZRmChBOdJTiKFTllN/okGBWWW/Zyehyp6fHUawC78qSW8c8jbm6WP+k3ewgVQ7xz+w5uJ3y49mC1xZSfzt/+DK6yJg4/YvzXD+CIGmi02c8VWy1N2DfdYEIQ3yfZv0Um0fCV5JpkEu85RxTDP3LGy24xPfKrfpi87oKTGEtqbb8b/NGUsfFclYkGS7G2nqj1lDGmMiqRML+PjOvug8K5Zrs8u8zCh3r5xxkBLqobP"};
+    const CHURCH_ENC = {"salt": "ocNgq63E0EA+dVWLaRZ0zg==", "iter": 250000, "iv": "k3FYWp5eE6a2V76A", "data": "NNkNVGpE+3JvwVfg2iPHi4TT4adfla1vBI32FJ1hBw95g/BRUy7L4JpEbSTGK9JNOdhyC5IXgTwc54jv7md4AYsrChDDFAQZ2xGXqUWi588QSVvjgpb1w64bOXyxQDVk3wwxhgRq9pMYL2uh7VBwxEZGpy6aNILdpeuk/p0ug9sVsUhXLYmbvwWKacA1yn8lMYKVirFEseCqmADjm0JtioeQbYoRvLrS4OB03ej7HaTqu8nFrUgDsQvUPbuKDfhTJDskQCs48//TU9BO7sgznQ8ujsvFBLxUH7qBx9AhJizFsfJ8z8rRCxzd9sc7aOV6ARNqA4QYEHrY2tLirwyGF2aC+qIm4QTWG/PF1ME5UofHeEzs0PcT9OYq0FSXRMxS0YwvvI/rR1QrtZ0vrM944uaSvnJ0KZfmCeScw18LLv2va6P7H3qGr6daBgDbkkwGGVOA8VCLR7bcyJKDJBrWilGtzhYFHFVViP/PeJBeZYUL/szP2lsOLmHg0Pe473MGT4iIf0zD3yfUNfoiAuWiAdWTIzEO2ukpk5rV+g5B716Ajk0mu5O/EW/6Q4OCQBb+7AJwj2ZiutxGGaxVyXrTBWOswUwvbwOEZyepxq6dBYFKm9UaaoD8dxIpiwKC0PlIZQVfNVey124yT5g/TXn9sbhjFHvvfM+n/69iMKiITMmePvc/uhHskqgm+6kc/S62fe8PYx0IBXHDP7aymO523QAj+dlgg6dBwsA4Sc1aby0X7WjnxuC101BLSbhd35jJyI8OP2psqPETUS0e1nJr"};
     let church = { 2026: {}, 2027: {} };
 
     const today = new Date();
@@ -665,6 +667,7 @@
       church = { 2026: data["2026"] || {}, 2027: data["2027"] || {} };
       renderAll();
       form.hidden = true;
+      document.getElementById("pw-hint").hidden = true;
       relock.hidden = false;
       msg.textContent = "Agenda da igreja visível neste navegador.";
     }
@@ -672,6 +675,7 @@
       church = { 2026: {}, 2027: {} };
       renderAll();
       form.hidden = false;
+      document.getElementById("pw-hint").hidden = false;
       relock.hidden = true;
       msg.textContent = text || "";
     }
