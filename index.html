@@ -342,7 +342,7 @@
       box-shadow: 0 0 16px rgba(255, 255, 255, .35);
     }
 
-    table.cal td.lua::before, table.cal td.estacao::before {
+    table.cal td.estacao::before {
       content: "";
       position: absolute;
       top: 3px;
@@ -351,14 +351,12 @@
       margin-left: -2px;
       border-radius: 50%;
     }
-    table.cal td.lua::before { background: #e6e9f5; box-shadow: 0 0 4px #e6e9f5; }
     table.cal td.estacao::before { background: #8cf5a0; box-shadow: 0 0 4px #8cf5a0; }
     table.cal td.eclipse {
       color: #ffe0b8;
       font-weight: 700;
       box-shadow: inset 0 0 0 2px #ff9f43, 0 0 10px rgba(255, 159, 67, .45);
     }
-    .notes .item.lua::before { content: "☾ "; }
     .notes .item.estacao::before { content: "✦ "; color: #8cf5a0; }
     .notes .item.eclipse::before { content: "◐ "; color: #ff9f43; }
     .notes .item.eclipse { color: #ffe0b8; }
@@ -458,7 +456,6 @@
       <span><i class="swatch" style="background:#14f1c4"></i>Recesso PUC</span>
       <span><i class="swatch" style="background:#ffe36b"></i>Data comemorativa / ponto facultativo</span>
       <span><i class="swatch" style="background:#6cb8ff;box-shadow:0 0 6px #6cb8ff"></i>Igreja (Livração)</span>
-      <span><i class="swatch" style="background:#e6e9f5;box-shadow:0 0 6px #e6e9f5"></i>Fases da Lua</span>
       <span><i class="swatch" style="background:#8cf5a0"></i>Início das estações</span>
       <span><i class="swatch" style="background:transparent;box-shadow:inset 0 0 0 2px #ff9f43"></i>Eclipse</span>
       <span><i class="swatch" style="background:linear-gradient(135deg,#b9a4ff,#6cb8ff)"></i>Hoje (pisca)</span>
@@ -489,7 +486,7 @@
 
     <footer>
       Fontes: Calendário Escolar Geral PUC-SP 2026 (Reitoria) e Ato nº 30/2026 · feriados nacionais e de São Paulo · compromissos da Paróquia N. Sra. da Livração (Google Agenda, protegidos por senha).<br />
-      Fases da Lua, estações e eclipses: horário de Brasília, calculados astronomicamente. Eclipses: horário aproximado do máximo; a visibilidade em SP foi conferida pela altura do Sol e da Lua nesse horário.<br />
+      Estações e eclipses: horário de Brasília, calculados astronomicamente. Eclipses: horário aproximado do máximo; a visibilidade em SP foi conferida pela altura do Sol e da Lua nesse horário.<br />
       Recessos de 2027 da PUC-SP ainda não publicados — o ano de 2027 traz feriados oficiais e datas comemorativas.
     </footer>
   </div>
@@ -570,7 +567,7 @@
     const CHURCH_ENC = {"salt": "ocNgq63E0EA+dVWLaRZ0zg==", "iter": 250000, "iv": "k3FYWp5eE6a2V76A", "data": "NNkNVGpE+3JvwVfg2iPHi4TT4adfla1vBI32FJ1hBw95g/BRUy7L4JpEbSTGK9JNOdhyC5IXgTwc54jv7md4AYsrChDDFAQZ2xGXqUWi588QSVvjgpb1w64bOXyxQDVk3wwxhgRq9pMYL2uh7VBwxEZGpy6aNILdpeuk/p0ug9sVsUhXLYmbvwWKacA1yn8lMYKVirFEseCqmADjm0JtioeQbYoRvLrS4OB03ej7HaTqu8nFrUgDsQvUPbuKDfhTJDskQCs48//TU9BO7sgznQ8ujsvFBLxUH7qBx9AhJizFsfJ8z8rRCxzd9sc7aOV6ARNqA4QYEHrY2tLirwyGF2aC+qIm4QTWG/PF1ME5UofHeEzs0PcT9OYq0FSXRMxS0YwvvI/rR1QrtZ0vrM944uaSvnJ0KZfmCeScw18LLv2va6P7H3qGr6daBgDbkkwGGVOA8VCLR7bcyJKDJBrWilGtzhYFHFVViP/PeJBeZYUL/szP2lsOLmHg0Pe473MGT4iIf0zD3yfUNfoiAuWiAdWTIzEO2ukpk5rV+g5B716Ajk0mu5O/EW/6Q4OCQBb+7AJwj2ZiutxGGaxVyXrTBWOswUwvbwOEZyepxq6dBYFKm9UaaoD8dxIpiwKC0PlIZQVfNVey124yT5g/TXn9sbhjFHvvfM+n/69iMKiITMmePvc/uhHskqgm+6kc/S62fe8PYx0IBXHDP7aymO523QAj+dlgg6dBwsA4Sc1aby0X7WjnxuC101BLSbhd35jJyI8OP2psqPETUS0e1nJr"};
     let church = { 2026: {}, 2027: {} };
 
-    // Fases da Lua, início das estações e eclipses (horário de Brasília)
+    // Início das estações e eclipses (horário de Brasília)
 const ASTRO = {
   "2026": {
     "3-20": [
@@ -583,10 +580,6 @@ const ASTRO = {
       [
         "estacao",
         "21 – Início do inverno · 05h24"
-      ],
-      [
-        "lua",
-        "21 – Quarto crescente · 18h55"
       ]
     ],
     "9-22": [
@@ -599,276 +592,6 @@ const ASTRO = {
       [
         "estacao",
         "21 – Início do verão · 17h49"
-      ]
-    ],
-    "1-3": [
-      [
-        "lua",
-        "03 – Lua cheia · 07h02"
-      ]
-    ],
-    "1-10": [
-      [
-        "lua",
-        "10 – Quarto minguante · 12h48"
-      ]
-    ],
-    "1-18": [
-      [
-        "lua",
-        "18 – Lua nova · 16h51"
-      ]
-    ],
-    "1-26": [
-      [
-        "lua",
-        "26 – Quarto crescente · 01h47"
-      ]
-    ],
-    "2-1": [
-      [
-        "lua",
-        "01 – Lua cheia · 19h09"
-      ]
-    ],
-    "2-9": [
-      [
-        "lua",
-        "09 – Quarto minguante · 09h43"
-      ]
-    ],
-    "2-24": [
-      [
-        "lua",
-        "24 – Quarto crescente · 09h27"
-      ]
-    ],
-    "3-11": [
-      [
-        "lua",
-        "11 – Quarto minguante · 06h38"
-      ]
-    ],
-    "3-18": [
-      [
-        "lua",
-        "18 – Lua nova · 22h23"
-      ]
-    ],
-    "3-25": [
-      [
-        "lua",
-        "25 – Quarto crescente · 16h17"
-      ]
-    ],
-    "4-1": [
-      [
-        "lua",
-        "01 – Lua cheia · 23h11"
-      ]
-    ],
-    "4-10": [
-      [
-        "lua",
-        "10 – Quarto minguante · 01h51"
-      ]
-    ],
-    "4-17": [
-      [
-        "lua",
-        "17 – Lua nova · 08h51"
-      ]
-    ],
-    "4-23": [
-      [
-        "lua",
-        "23 – Quarto crescente · 23h31"
-      ]
-    ],
-    "5-1": [
-      [
-        "lua",
-        "01 – Lua cheia · 14h23"
-      ]
-    ],
-    "5-9": [
-      [
-        "lua",
-        "09 – Quarto minguante · 18h10"
-      ]
-    ],
-    "5-16": [
-      [
-        "lua",
-        "16 – Lua nova · 17h00"
-      ]
-    ],
-    "5-23": [
-      [
-        "lua",
-        "23 – Quarto crescente · 08h10"
-      ]
-    ],
-    "5-31": [
-      [
-        "lua",
-        "31 – Lua cheia · 05h45"
-      ]
-    ],
-    "6-8": [
-      [
-        "lua",
-        "08 – Quarto minguante · 07h00"
-      ]
-    ],
-    "6-14": [
-      [
-        "lua",
-        "14 – Lua nova · 23h54"
-      ]
-    ],
-    "6-29": [
-      [
-        "lua",
-        "29 – Lua cheia · 20h56"
-      ]
-    ],
-    "7-7": [
-      [
-        "lua",
-        "07 – Quarto minguante · 16h28"
-      ]
-    ],
-    "7-14": [
-      [
-        "lua",
-        "14 – Lua nova · 06h43"
-      ]
-    ],
-    "7-21": [
-      [
-        "lua",
-        "21 – Quarto crescente · 08h05"
-      ]
-    ],
-    "7-29": [
-      [
-        "lua",
-        "29 – Lua cheia · 11h35"
-      ]
-    ],
-    "8-5": [
-      [
-        "lua",
-        "05 – Quarto minguante · 23h21"
-      ]
-    ],
-    "8-19": [
-      [
-        "lua",
-        "19 – Quarto crescente · 23h46"
-      ]
-    ],
-    "9-4": [
-      [
-        "lua",
-        "04 – Quarto minguante · 04h51"
-      ]
-    ],
-    "9-11": [
-      [
-        "lua",
-        "11 – Lua nova · 00h26"
-      ]
-    ],
-    "9-18": [
-      [
-        "lua",
-        "18 – Quarto crescente · 17h43"
-      ]
-    ],
-    "9-26": [
-      [
-        "lua",
-        "26 – Lua cheia · 13h48"
-      ]
-    ],
-    "10-3": [
-      [
-        "lua",
-        "03 – Quarto minguante · 10h24"
-      ]
-    ],
-    "10-10": [
-      [
-        "lua",
-        "10 – Lua nova · 12h50"
-      ]
-    ],
-    "10-18": [
-      [
-        "lua",
-        "18 – Quarto crescente · 13h12"
-      ]
-    ],
-    "10-26": [
-      [
-        "lua",
-        "26 – Lua cheia · 01h11"
-      ]
-    ],
-    "11-1": [
-      [
-        "lua",
-        "01 – Quarto minguante · 17h28"
-      ]
-    ],
-    "11-9": [
-      [
-        "lua",
-        "09 – Lua nova · 04h02"
-      ]
-    ],
-    "11-17": [
-      [
-        "lua",
-        "17 – Quarto crescente · 08h47"
-      ]
-    ],
-    "11-24": [
-      [
-        "lua",
-        "24 – Lua cheia · 11h53"
-      ]
-    ],
-    "12-1": [
-      [
-        "lua",
-        "01 – Quarto minguante · 03h08"
-      ]
-    ],
-    "12-8": [
-      [
-        "lua",
-        "08 – Lua nova · 21h51"
-      ]
-    ],
-    "12-17": [
-      [
-        "lua",
-        "17 – Quarto crescente · 02h42"
-      ]
-    ],
-    "12-23": [
-      [
-        "lua",
-        "23 – Lua cheia · 22h28"
-      ]
-    ],
-    "12-30": [
-      [
-        "lua",
-        "30 – Quarto minguante · 15h59"
       ]
     ],
     "2-17": [
@@ -913,286 +636,12 @@ const ASTRO = {
       [
         "estacao",
         "23 – Início da primavera · 03h01"
-      ],
-      [
-        "lua",
-        "23 – Quarto minguante · 07h20"
       ]
     ],
     "12-21": [
       [
         "estacao",
         "21 – Início do verão · 23h41"
-      ]
-    ],
-    "1-7": [
-      [
-        "lua",
-        "07 – Lua nova · 17h24"
-      ]
-    ],
-    "1-15": [
-      [
-        "lua",
-        "15 – Quarto crescente · 17h34"
-      ]
-    ],
-    "1-22": [
-      [
-        "lua",
-        "22 – Lua cheia · 09h17"
-      ]
-    ],
-    "1-29": [
-      [
-        "lua",
-        "29 – Quarto minguante · 07h55"
-      ]
-    ],
-    "2-14": [
-      [
-        "lua",
-        "14 – Quarto crescente · 04h58"
-      ]
-    ],
-    "2-28": [
-      [
-        "lua",
-        "28 – Quarto minguante · 02h16"
-      ]
-    ],
-    "3-8": [
-      [
-        "lua",
-        "08 – Lua nova · 06h29"
-      ]
-    ],
-    "3-15": [
-      [
-        "lua",
-        "15 – Quarto crescente · 13h25"
-      ]
-    ],
-    "3-22": [
-      [
-        "lua",
-        "22 – Lua cheia · 07h43"
-      ]
-    ],
-    "3-29": [
-      [
-        "lua",
-        "29 – Quarto minguante · 21h53"
-      ]
-    ],
-    "4-6": [
-      [
-        "lua",
-        "06 – Lua nova · 20h51"
-      ]
-    ],
-    "4-13": [
-      [
-        "lua",
-        "13 – Quarto crescente · 19h56"
-      ]
-    ],
-    "4-20": [
-      [
-        "lua",
-        "20 – Lua cheia · 19h27"
-      ]
-    ],
-    "4-28": [
-      [
-        "lua",
-        "28 – Quarto minguante · 17h17"
-      ]
-    ],
-    "5-6": [
-      [
-        "lua",
-        "06 – Lua nova · 07h58"
-      ]
-    ],
-    "5-13": [
-      [
-        "lua",
-        "13 – Quarto crescente · 01h43"
-      ]
-    ],
-    "5-20": [
-      [
-        "lua",
-        "20 – Lua cheia · 07h58"
-      ]
-    ],
-    "5-28": [
-      [
-        "lua",
-        "28 – Quarto minguante · 10h57"
-      ]
-    ],
-    "6-4": [
-      [
-        "lua",
-        "04 – Lua nova · 16h40"
-      ]
-    ],
-    "6-11": [
-      [
-        "lua",
-        "11 – Quarto crescente · 07h56"
-      ]
-    ],
-    "6-18": [
-      [
-        "lua",
-        "18 – Lua cheia · 21h44"
-      ]
-    ],
-    "6-27": [
-      [
-        "lua",
-        "27 – Quarto minguante · 01h54"
-      ]
-    ],
-    "7-4": [
-      [
-        "lua",
-        "04 – Lua nova · 00h01"
-      ]
-    ],
-    "7-10": [
-      [
-        "lua",
-        "10 – Quarto crescente · 15h38"
-      ]
-    ],
-    "7-18": [
-      [
-        "lua",
-        "18 – Lua cheia · 12h44"
-      ]
-    ],
-    "7-26": [
-      [
-        "lua",
-        "26 – Quarto minguante · 13h54"
-      ]
-    ],
-    "8-9": [
-      [
-        "lua",
-        "09 – Quarto crescente · 01h54"
-      ]
-    ],
-    "8-17": [
-      [
-        "lua",
-        "17 – Lua cheia · 04h28"
-      ]
-    ],
-    "8-24": [
-      [
-        "lua",
-        "24 – Quarto minguante · 23h27"
-      ]
-    ],
-    "8-31": [
-      [
-        "lua",
-        "31 – Lua nova · 14h41"
-      ]
-    ],
-    "9-7": [
-      [
-        "lua",
-        "07 – Quarto crescente · 15h31"
-      ]
-    ],
-    "9-15": [
-      [
-        "lua",
-        "15 – Lua cheia · 20h03"
-      ]
-    ],
-    "9-29": [
-      [
-        "lua",
-        "29 – Lua nova · 23h35"
-      ]
-    ],
-    "10-7": [
-      [
-        "lua",
-        "07 – Quarto crescente · 08h47"
-      ]
-    ],
-    "10-15": [
-      [
-        "lua",
-        "15 – Lua cheia · 10h46"
-      ]
-    ],
-    "10-22": [
-      [
-        "lua",
-        "22 – Quarto minguante · 14h29"
-      ]
-    ],
-    "10-29": [
-      [
-        "lua",
-        "29 – Lua nova · 10h36"
-      ]
-    ],
-    "11-6": [
-      [
-        "lua",
-        "06 – Quarto crescente · 04h59"
-      ]
-    ],
-    "11-14": [
-      [
-        "lua",
-        "14 – Lua cheia · 00h25"
-      ]
-    ],
-    "11-20": [
-      [
-        "lua",
-        "20 – Quarto minguante · 21h48"
-      ]
-    ],
-    "11-28": [
-      [
-        "lua",
-        "28 – Lua nova · 00h24"
-      ]
-    ],
-    "12-6": [
-      [
-        "lua",
-        "06 – Quarto crescente · 02h22"
-      ]
-    ],
-    "12-13": [
-      [
-        "lua",
-        "13 – Lua cheia · 13h08"
-      ]
-    ],
-    "12-20": [
-      [
-        "lua",
-        "20 – Quarto minguante · 06h10"
-      ]
-    ],
-    "12-27": [
-      [
-        "lua",
-        "27 – Lua nova · 17h12"
       ]
     ],
     "2-6": [
