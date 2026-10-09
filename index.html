@@ -242,7 +242,8 @@
 
     table.cal {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 4px 6px;
       table-layout: fixed;
       font-size: 13px;
     }
@@ -315,17 +316,21 @@
       text-shadow: 0 0 12px rgba(108, 184, 255, .55);
     }
     table.cal td.today {
-      background: linear-gradient(135deg, #b9a4ff 0%, #6cb8ff 100%);
-      color: #061018;
       font-weight: 700;
-      outline: 2px solid var(--gold);
+      outline: 2px solid #ffe36b;
       outline-offset: -2px;
-      box-shadow: 0 0 14px rgba(255, 227, 107, .55);
-      animation: hoje-pisca 3s ease-in-out infinite;
+      border-radius: 8px;
+      animation: hoje-pisca 2.6s ease-in-out infinite;
     }
     @keyframes hoje-pisca {
-      0%, 100% { opacity: 1; outline-color: var(--gold); box-shadow: 0 0 8px rgba(255, 227, 107, .45); }
-      50% { opacity: .6; outline-color: rgba(255, 227, 107, .1); box-shadow: 0 0 22px rgba(255, 227, 107, .95); }
+      0%, 100% {
+        outline-color: #ffe36b;
+        box-shadow: 0 0 4px #ffe36b, 0 0 10px rgba(255, 227, 107, .7), inset 0 0 6px rgba(255, 227, 107, .35);
+      }
+      50% {
+        outline-color: rgba(255, 227, 107, .35);
+        box-shadow: 0 0 2px rgba(255, 227, 107, .4), 0 0 6px rgba(255, 227, 107, .25), inset 0 0 2px rgba(255, 227, 107, .1);
+      }
     }
     @media (prefers-reduced-motion: reduce) {
       table.cal td.today { animation: none; }
