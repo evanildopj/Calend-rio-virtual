@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário PUC-SP 2026–2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07070e;
+      --paper: rgba(14, 16, 28, .78);
+      --ink: #e8edf7;
+      --muted: #8b93ad;
+      --line: rgba(120, 240, 255, .18);
+      --sunday: #ff4d8d;
+      --holiday: #ff2d6a;
+      --recesso: #14f1c4;
+      --gold: #ffe36b;
+      --cyan: #3cf0ff;
+      --violet: #9b7dff;
+      --header: #3cf0ff;
+      --today: #b9a4ff;
+      --church: #6cb8ff;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Outfit", system-ui, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 28px 16px 64px;
+      background:
+        radial-gradient(900px 520px at 12% -8%, rgba(60, 240, 255, .18), transparent 55%),
+        radial-gradient(800px 480px at 92% 8%, rgba(155, 125, 255, .22), transparent 50%),
+        radial-gradient(700px 500px at 50% 108%, rgba(255, 45, 106, .14), transparent 55%),
+        linear-gradient(180deg, #05050b 0%, #0b0d18 55%, #07070e 100%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 80%);
+    }
+
+    .wrap { max-width: 1280px; margin: 0 auto; }
+
+    header.hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 0 12px rgba(60, 240, 255, .55);
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 600;
+      letter-spacing: .02em;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 24px rgba(60, 240, 255, .35);
+    }
+
+    .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 22px 0 8px;
+    }
+
+    .toolbar button {
+      border: 1px solid rgba(60, 240, 255, .28);
+      background: rgba(12, 16, 30, .7);
+      color: #d7e6ff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .2s ease;
+    }
+
+    .toolbar button:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 16px rgba(60, 240, 255, .35);
+    }
+
+    .toolbar button.active {
+      background: linear-gradient(90deg, #14f1c4, #3cf0ff);
+      color: #061018;
+      border-color: transparent;
+      box-shadow: 0 0 22px rgba(60, 240, 255, .45);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px 22px;
+      margin: 16px 0 26px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .swatch {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .lock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin: -10px 0 24px;
+    }
+    .lock[hidden] { display: none; }
+    .lock form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .lock input[type=password] {
+      background: rgba(12, 16, 30, .8);
+      border: 1px solid rgba(108, 184, 255, .35);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font: inherit;
+      width: 170px;
+    }
+    .lock input[type=password]:focus { outline: 2px solid var(--church); outline-offset: 1px; }
+    .lock button {
+      border: 1px solid rgba(108, 184, 255, .45);
+      background: rgba(108, 184, 255, .14);
+      color: #d6ebff;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .lock button:hover, .lock button:focus-visible { box-shadow: 0 0 14px rgba(108, 184, 255, .45); outline: none; }
+    .lock-msg { font-size: 12px; color: var(--muted); min-height: 1em; }
+
+    .year-block { display: none; }
+    .year-block.show { display: block; }
+
+    .year-title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      text-align: center;
+      font-size: 34px;
+      margin: 8px 0 22px;
+      color: #fff;
+      text-shadow: 0 0 18px rgba(155, 125, 255, .4);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .month {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 14px 14px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .28);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .month.current {
+      border-color: rgba(255, 227, 107, .7);
+      box-shadow:
+        0 0 0 1px rgba(255, 227, 107, .55),
+        0 0 34px 6px rgba(255, 227, 107, .28),
+        0 0 60px rgba(60, 240, 255, .12);
+    }
+
+    .month.current::before {
+      content: "mês vigente";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(255, 227, 107, .7);
+    }
+
+    .month h2 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 600;
+      text-transform: lowercase;
+      margin-bottom: 10px;
+      color: #f4f7ff;
+    }
+
+    table.cal {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 13px;
+    }
+
+    table.cal th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: .06em;
+      padding-bottom: 6px;
+    }
+
+    table.cal th.sun { color: var(--sunday); }
+
+    table.cal td {
+      text-align: center;
+      height: 30px;
+      color: var(--ink);
+      border-radius: 8px;
+      position: relative;
+      transition: transform .15s ease, box-shadow .15s ease, outline-color .15s ease;
+    }
+
+    table.cal td:not(:empty):hover {
+      outline: 2px solid var(--cyan);
+      outline-offset: -2px;
+      box-shadow: 0 0 14px rgba(60, 240, 255, .55);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    table.cal td.sun { color: var(--sunday); font-weight: 600; }
+    table.cal td.holiday {
+      color: #ffd0dc;
+      background: rgba(255, 45, 106, .22);
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(255, 77, 141, .45);
+    }
+    table.cal td.recesso {
+      color: #b8fff0;
+      background: rgba(20, 241, 196, .16);
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(20, 241, 196, .4);
+    }
+    table.cal td.commemo {
+      color: #ffe9a8;
+      background: rgba(255, 227, 107, .14);
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(255, 227, 107, .38);
+    }
+    table.cal td.church::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 3px;
+      width: 5px; height: 5px;
+      margin-left: -2.5px;
+      border-radius: 50%;
+      background: var(--church);
+      box-shadow: 0 0 6px var(--church);
+    }
+    table.cal td.church:not(.holiday):not(.recesso):not(.commemo) {
+      color: #d6ebff;
+      font-weight: 700;
+    }
+    .notes .item.church { color: #a9d4ff; }
+    .notes .item.church::before { content: "✝ "; color: var(--church); }
+    .notes .item.church.on {
+      color: #d6ebff;
+      text-shadow: 0 0 12px rgba(108, 184, 255, .55);
+    }
+    table.cal td.today {
+      outline: 2px solid var(--today);
+      outline-offset: -2px;
+      box-shadow: 0 0 14px rgba(155, 125, 255, .75);
+      color: #fff;
+    }
+    table.cal td.holiday:hover,
+    table.cal td.recesso:hover,
+    table.cal td.commemo:hover {
+      outline: 2px solid #fff;
+      box-shadow: 0 0 16px rgba(255, 255, 255, .35);
+    }
+
+    .notes {
+      margin-top: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #c5cce0;
+      min-height: 52px;
+    }
+
+    .notes b { font-weight: 700; }
+
+    .notes .item {
+      display: block;
+      padding: 1px 0;
+      border-radius: 4px;
+      transition: color .15s ease, text-shadow .15s ease, background .15s ease;
+    }
+
+    .notes .item.on {
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255,255,255,.35);
+      background: rgba(255,255,255,.06);
+      padding-left: 4px;
+    }
+
+    .notes .item.holiday.on {
+      color: #ffd0dc;
+      text-shadow: 0 0 12px rgba(255, 77, 141, .55);
+    }
+
+    .notes .item.recesso.on {
+      color: #b8fff0;
+      text-shadow: 0 0 12px rgba(20, 241, 196, .45);
+    }
+
+    .notes .item.commemo.on {
+      color: #ffe9a8;
+      text-shadow: 0 0 12px rgba(255, 227, 107, .45);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .toolbar { display: none; }
+      .year-block { display: block !important; page-break-after: always; }
+      .month { box-shadow: none; break-inside: avoid; background: #fff; border-color: #ccc; }
+      body::before { display: none; }
+      h1, .year-title, .month h2, table.cal td, .notes, .notes .item { color: #111 !important; text-shadow: none !important; }
+      .month.current::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="badge">Calendário anual · São Paulo · PUC-SP</div>
+      <h1>2026 &amp; 2027</h1>
+      <p class="sub">Feriados nacionais e municipais de São Paulo, recessos acadêmico-administrativos da PUC-SP e datas comemorativas.</p>
+    </header>
+
+    <div class="toolbar">
+      <button class="active" data-year="2026">2026</button>
+      <button data-year="2027">2027</button>
+      <button data-year="both">Ver os dois anos</button>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch" style="background:#ff2d6a"></i>Feriado</span>
+      <span><i class="swatch" style="background:#14f1c4"></i>Recesso PUC</span>
+      <span><i class="swatch" style="background:#ffe36b"></i>Data comemorativa / ponto facultativo</span>
+      <span><i class="swatch" style="background:#6cb8ff;box-shadow:0 0 6px #6cb8ff"></i>Igreja (Livração)</span>
+      <span><i class="swatch" style="background:transparent;box-shadow:inset 0 0 0 2px #b9a4ff"></i>Hoje</span>
+      <span><i class="swatch" style="background:transparent;border-radius:3px;box-shadow:inset 0 0 0 2px rgba(255,227,107,.7)"></i>Mês vigente</span>
+    </div>
+
+    <div class="lock" id="lock" hidden>
+      <form id="unlock-form" autocomplete="on">
+        <input type="text" name="username" value="agenda-igreja" autocomplete="username" hidden />
+        <label for="pw">Agenda da igreja</label>
+        <input id="pw" name="password" type="password" autocomplete="current-password" placeholder="Senha" required />
+        <button type="submit">Mostrar</button>
+      </form>
+      <p class="lock-msg" id="pw-msg" role="status"></p>
+      <button type="button" id="relock" hidden>Ocultar agenda da igreja</button>
+    </div>
+
+    <section class="year-block show" id="y2026">
+      <h2 class="year-title">2026</h2>
+      <div class="grid" id="grid-2026"></div>
+    </section>
+
+    <section class="year-block" id="y2027">
+      <h2 class="year-title">2027</h2>
+      <div class="grid" id="grid-2027"></div>
+    </section>
+
+    <footer>
+      Fontes: Calendário Escolar Geral PUC-SP 2026 (Reitoria) e Ato nº 30/2026 · feriados nacionais e de São Paulo · compromissos da Paróquia N. Sra. da Livração (Google Agenda, protegidos por senha).<br />
+      Recessos de 2027 da PUC-SP ainda não publicados — o ano de 2027 traz feriados oficiais e datas comemorativas.
+    </footer>
+  </div>
+
+  <script>
+    const MONTHS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+    const DOW = ["D","S","T","Q","Q","S","S"];
+
+    const events = {
+      2026: {
+        "1-1":  { type:"holiday", label:"1 – Ano Novo / Confraternização Universal" },
+        "1-2":  { type:"recesso", label:"2 – Recesso PUC" },
+        "1-25": { type:"holiday", label:"25 – Aniversário de São Paulo" },
+        "2-14": { type:"recesso", label:"14 a 16 – Recesso PUC" },
+        "2-15": { type:"recesso", label:"" },
+        "2-16": { type:"recesso", label:"" },
+        "2-17": { type:"holiday", label:"17 – Carnaval" },
+        "2-18": { type:"recesso",  label:"18 – Quarta-feira de Cinzas / Recesso PUC" },
+        "4-2":  { type:"recesso", label:"2 e 4 – Recesso PUC" },
+        "4-3":  { type:"holiday", label:"3 – Sexta-feira Santa" },
+        "4-4":  { type:"recesso", label:"", ref:"4-2" },
+        "4-20": { type:"recesso", label:"20 – Recesso PUC" },
+        "4-21": { type:"holiday", label:"21 – Tiradentes" },
+        "5-1":  { type:"holiday", label:"1 – Dia do Trabalho" },
+        "5-2":  { type:"recesso", label:"2 – Recesso PUC" },
+        "5-10": { type:"commemo", label:"10 – Dia das Mães" },
+        "6-4":  { type:"holiday", label:"4 – Corpus Christi" },
+        "6-5":  { type:"recesso", label:"5 e 6 – Recesso PUC" },
+        "6-6":  { type:"recesso", label:"" },
+        "7-9":  { type:"holiday", label:"9 – Revolução Constitucionalista (SP)" },
+        "7-10": { type:"recesso", label:"10 e 11 – Recesso PUC" },
+        "7-11": { type:"recesso", label:"" },
+        "8-9":  { type:"commemo", label:"9 – Dia dos Pais" },
+        "8-15": { type:"commemo", label:"15 – Aniversário de Sorocaba (feriado só no campus Sorocaba – FCMS)" },
+        "8-22": { type:"recesso", label:"22 – Aniversário da PUC-SP / Recesso PUC" },
+        "9-7":  { type:"holiday", label:"7 – Independência do Brasil" },
+        "10-3": { type:"recesso", label:"3 – Recesso PUC (eleição – campi Monte Alegre, Marquês e Ipiranga)" },
+        "10-12":{ type:"holiday", label:"12 – Nossa Senhora Aparecida" },
+        "10-15":{ type:"recesso", label:"15 – Recesso acadêmico-administrativo (Ato 30/2026)" },
+        "11-2": { type:"holiday", label:"2 – Finados" },
+        "11-15":{ type:"holiday", label:"15 – Proclamação da República" },
+        "11-20":{ type:"holiday", label:"20 – Dia da Consciência Negra" },
+        "11-21":{ type:"recesso", label:"21 – Recesso PUC" },
+        "12-24":{ type:"recesso", label:"24, 26 e 28 a 31 – Recesso PUC" },
+        "12-25":{ type:"holiday", label:"25 – Natal" },
+        "12-26":{ type:"recesso", label:"", ref:"12-24" },
+        "12-28":{ type:"recesso", label:"", ref:"12-24" },
+        "12-29":{ type:"recesso", label:"", ref:"12-24" },
+        "12-30":{ type:"recesso", label:"", ref:"12-24" },
+        "12-31":{ type:"recesso", label:"", ref:"12-24" }
+      },
+      2027: {
+        "1-1":  { type:"holiday", label:"1 – Ano Novo / Confraternização Universal" },
+        "1-25": { type:"holiday", label:"25 – Aniversário de São Paulo" },
+        "2-8":  { type:"commemo", label:"8 – Segunda-feira de Carnaval (ponto facultativo)" },
+        "2-9":  { type:"holiday", label:"9 – Carnaval" },
+        "2-10": { type:"commemo", label:"10 – Quarta-feira de Cinzas (ponto facultativo)" },
+        "3-26": { type:"holiday", label:"26 – Sexta-feira Santa" },
+        "4-21": { type:"holiday", label:"21 – Tiradentes" },
+        "5-1":  { type:"holiday", label:"1 – Dia do Trabalho" },
+        "5-9":  { type:"commemo", label:"9 – Dia das Mães" },
+        "5-27": { type:"holiday", label:"27 – Corpus Christi" },
+        "7-9":  { type:"holiday", label:"9 – Revolução Constitucionalista (SP)" },
+        "8-8":  { type:"commemo", label:"8 – Dia dos Pais" },
+        "8-15": { type:"commemo", label:"15 – Aniversário de Sorocaba (feriado só no campus Sorocaba – FCMS)" },
+        "8-22": { type:"commemo", label:"22 – Aniversário da PUC-SP" },
+        "9-7":  { type:"holiday", label:"7 – Independência do Brasil" },
+        "10-12":{ type:"holiday", label:"12 – Nossa Senhora Aparecida" },
+        "11-2": { type:"holiday", label:"2 – Finados" },
+        "11-15":{ type:"holiday", label:"15 – Proclamação da República" },
+        "11-20":{ type:"holiday", label:"20 – Dia da Consciência Negra" },
+        "12-25":{ type:"holiday", label:"25 – Natal" }
+      }
+    };
+
+    // Agenda da igreja: criptografada (AES-GCM). Só aparece com a senha.
+    // Gerada por tools/agenda_igreja.py — não edite esta linha à mão.
+    const CHURCH_ENC = {"salt": "2cDuVZy/Al13UpYBUr2JRA==", "iter": 250000, "iv": "nP0g7W887rhYoxTs", "data": "4iKiOdnKnIFo2FGLvoN3blo/n+X5pkZJHd18Ivpu/PjZMd7XCPzYE2/BH6g/6O+vjibTrST2BPUD/hupCKinpEOmxvhUxevcLncbswNv7UD2KqPRkbmVbkuf0zlOmXQ8O0GZkEpUhA8+Vv62JLFTiuqpjZhi77u0iyXN2xCyIkbZhsmwhz64HqypeyW+juSA57BFcAkJENuds8KiXDcrPsgURddnrnrISsyjcBga+dCNxF1ZcuLenUC3N6Jl+tFU8xbUqf3jxqUwCEDQYinybMqF/Sl6Ho5FHK9FdhjnCQjaVV1ouqGV72Mc44maSMZ7hzhIPVHLyVMQb8tvMa+9PN2T0crqfa5SATF930gWB5iAQSAIYUbNSotayVefDzqIJ1Je3IPb6BLkMrPT2ve6FXcbIAiR6EUyLye5z8BJuhgvPP/MK+ejs9AsHmvyPF08JXhS1muSDodpcA18KNceH8lzhGhLSJp9d0+hJnGO7JthT7JCi4/cno1SMCTybB9kyO2BJiA4VJjB+i1MRyvuzjQACI9/Sfv9G5KfseK/SN5ZRmChBOdJTiKFTllN/okGBWWW/Zyehyp6fHUawC78qSW8c8jbm6WP+k3ewgVQ7xz+w5uJ3y49mC1xZSfzt/+DK6yJg4/YvzXD+CIGmi02c8VWy1N2DfdYEIQ3yfZv0Um0fCV5JpkEu85RxTDP3LGy24xPfKrfpi87oKTGEtqbb8b/NGUsfFclYkGS7G2nqj1lDGmMiqRML+PjOvug8K5Zrs8u8zCh3r5xxkBLqobP"};
+    let church = { 2026: {}, 2027: {} };
+
+    const today = new Date();
+
+    function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+    function firstWeekday(y, m) { return new Date(y, m, 1).getDay(); }
+
+    function renderYear(year, mountId) {
+      const mount = document.getElementById(mountId);
+      mount.innerHTML = "";
+      for (let m = 0; m < 12; m++) {
+        const card = document.createElement("article");
+        card.className = "month";
+        if (year === today.getFullYear() && m === today.getMonth()) card.classList.add("current");
+
+        const h2 = document.createElement("h2");
+        h2.textContent = MONTHS[m];
+        card.appendChild(h2);
+
+        const table = document.createElement("table");
+        table.className = "cal";
+        const thead = document.createElement("thead");
+        const trh = document.createElement("tr");
+        DOW.forEach((d, i) => {
+          const th = document.createElement("th");
+          th.textContent = d;
+          if (i === 0) th.className = "sun";
+          trh.appendChild(th);
+        });
+        thead.appendChild(trh);
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+        let row = document.createElement("tr");
+        const start = firstWeekday(year, m);
+        for (let i = 0; i < start; i++) row.appendChild(document.createElement("td"));
+
+        const evs = events[year] || {};
+        const notesMap = [];
+        const dim = daysInMonth(year, m);
+
+        function noteFor(day) {
+          const ev = evs[`${m+1}-${day}`];
+          if (!ev) return null;
+          if (ev.label) return ev.label;
+          if (ev.ref && evs[ev.ref]) return evs[ev.ref].label;
+          for (let i = day - 1; i >= 1; i--) {
+            const prev = evs[`${m+1}-${i}`];
+            if (!prev || prev.type !== ev.type) break;
+            if (prev.label) return prev.label;
+          }
+          return ev.type;
+        }
+
+        for (let d = 1; d <= dim; d++) {
+          if (row.children.length === 7) {
+            tbody.appendChild(row);
+            row = document.createElement("tr");
+          }
+          const td = document.createElement("td");
+          td.textContent = d;
+          const wd = new Date(year, m, d).getDay();
+          if (wd === 0) td.classList.add("sun");
+          const key = `${m+1}-${d}`;
+          const ev = evs[key];
+          const keys = [];
+          if (ev) {
+            td.classList.add(ev.type);
+            keys.push(noteFor(d));
+            if (ev.label) notesMap.push({ label: ev.label, type: ev.type });
+          }
+          const ch = (church[year] || {})[key];
+          if (ch) {
+            td.classList.add("church");
+            ch.forEach(l => { keys.push(l); notesMap.push({ label: l, type: "church" }); });
+          }
+          if (keys.length) td.dataset.note = keys.join("||");
+          if (year === today.getFullYear() && m === today.getMonth() && d === today.getDate()) {
+            td.classList.add("today");
+          }
+          row.appendChild(td);
+        }
+        while (row.children.length && row.children.length < 7) row.appendChild(document.createElement("td"));
+        tbody.appendChild(row);
+        table.appendChild(tbody);
+        card.appendChild(table);
+
+        const note = document.createElement("div");
+        note.className = "notes";
+        if (notesMap.length) {
+          notesMap.forEach(n => {
+            const line = document.createElement("span");
+            line.className = "item " + n.type;
+            line.dataset.note = n.label;
+            line.innerHTML = n.label.replace(/^(.+?)(?= – )/, "<b>$1</b>");
+            note.appendChild(line);
+          });
+        } else {
+          note.innerHTML = "&nbsp;";
+        }
+        card.appendChild(note);
+
+        card.addEventListener("mouseover", (e) => {
+          const cell = e.target.closest("td[data-note]");
+          const line = e.target.closest(".item[data-note]");
+          const value = (cell || line)?.dataset.note || "";
+          const wanted = value ? value.split("||") : [];
+          note.querySelectorAll(".item").forEach(el => {
+            el.classList.toggle("on", wanted.includes(el.dataset.note));
+          });
+        });
+        card.addEventListener("mouseout", (e) => {
+          if (!card.contains(e.relatedTarget)) {
+            note.querySelectorAll(".item").forEach(el => el.classList.remove("on"));
+          }
+        });
+
+        mount.appendChild(card);
+      }
+    }
+
+    function renderAll() {
+      renderYear(2026, "grid-2026");
+      renderYear(2027, "grid-2027");
+    }
+    renderAll();
+
+    // ---- Agenda da igreja (descriptografia no navegador) ----
+    const STORE_KEY = "agenda-igreja-chave";
+    const lockBox = document.getElementById("lock");
+    const form = document.getElementById("unlock-form");
+    const msg = document.getElementById("pw-msg");
+    const relock = document.getElementById("relock");
+    const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const toB64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+    async function keyFromPassword(pw) {
+      const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: b64(CHURCH_ENC.salt), iterations: CHURCH_ENC.iter, hash: "SHA-256" },
+        base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
+    }
+    async function openWith(key) {
+      const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(CHURCH_ENC.iv) }, key, b64(CHURCH_ENC.data));
+      const data = JSON.parse(new TextDecoder().decode(plain));
+      church = { 2026: data["2026"] || {}, 2027: data["2027"] || {} };
+      renderAll();
+      form.hidden = true;
+      relock.hidden = false;
+      msg.textContent = "Agenda da igreja visível neste navegador.";
+    }
+    function showLocked(text) {
+      church = { 2026: {}, 2027: {} };
+      renderAll();
+      form.hidden = false;
+      relock.hidden = true;
+      msg.textContent = text || "";
+    }
+
+    if (CHURCH_ENC && window.crypto && crypto.subtle) {
+      lockBox.hidden = false;
+      (async () => {
+        let saved = null;
+        try { saved = localStorage.getItem(STORE_KEY); } catch (e) {}
+        if (saved) {
+          try {
+            const key = await crypto.subtle.importKey("raw", b64(saved), "AES-GCM", false, ["decrypt"]);
+            await openWith(key);
+            return;
+          } catch (e) {
+            try { localStorage.removeItem(STORE_KEY); } catch (e2) {}
+          }
+        }
+        showLocked();
+      })();
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const pw = document.getElementById("pw").value;
+        msg.textContent = "Verificando…";
+        try {
+          const key = await keyFromPassword(pw);
+          await openWith(key);
+          try { localStorage.setItem(STORE_KEY, toB64(await crypto.subtle.exportKey("raw", key))); } catch (e2) {}
+          document.getElementById("pw").value = "";
+        } catch (err) {
+          msg.textContent = "Senha incorreta. Tente de novo.";
+        }
+      });
+
+      relock.addEventListener("click", () => {
+        try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+        showLocked("Agenda da igreja ocultada. Digite a senha para ver de novo.");
+      });
+    }
+
+    document.querySelectorAll(".toolbar button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".toolbar button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const y = btn.dataset.year;
+        document.getElementById("y2026").classList.toggle("show", y === "2026" || y === "both");
+        document.getElementById("y2027").classList.toggle("show", y === "2027" || y === "both");
+      });
+    });
+  </script>
+</body>
+</html>
