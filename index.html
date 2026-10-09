@@ -318,12 +318,14 @@
       background: linear-gradient(135deg, #b9a4ff 0%, #6cb8ff 100%);
       color: #061018;
       font-weight: 700;
-      box-shadow: 0 0 14px rgba(155, 125, 255, .6);
+      outline: 2px solid var(--gold);
+      outline-offset: -2px;
+      box-shadow: 0 0 14px rgba(255, 227, 107, .55);
       animation: hoje-pisca 3s ease-in-out infinite;
     }
     @keyframes hoje-pisca {
-      0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(155, 125, 255, .45); }
-      50% { opacity: .6; box-shadow: 0 0 22px rgba(155, 125, 255, .95); }
+      0%, 100% { opacity: 1; outline-color: var(--gold); box-shadow: 0 0 8px rgba(255, 227, 107, .45); }
+      50% { opacity: .6; outline-color: rgba(255, 227, 107, .1); box-shadow: 0 0 22px rgba(255, 227, 107, .95); }
     }
     @media (prefers-reduced-motion: reduce) {
       table.cal td.today { animation: none; }
