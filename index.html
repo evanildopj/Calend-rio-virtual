@@ -342,6 +342,15 @@
       box-shadow: 0 0 16px rgba(255, 255, 255, .35);
     }
 
+    table.cal td.lit {
+      color: #fff;
+      font-weight: 800;
+      background: rgba(255, 255, 255, .14);
+      outline: 2px solid #fff;
+      outline-offset: -2px;
+      box-shadow: 0 0 14px rgba(255, 255, 255, .5);
+    }
+
     .notes {
       margin-top: 10px;
       border-top: 1px solid var(--line);
@@ -644,10 +653,16 @@
           note.querySelectorAll(".item").forEach(el => {
             el.classList.toggle("on", wanted.includes(el.dataset.note));
           });
+          // Ao passar o mouse na legenda, destaca os dias correspondentes
+          const lineLabel = line ? line.dataset.note : "";
+          card.querySelectorAll("td[data-note]").forEach(td => {
+            td.classList.toggle("lit", !!lineLabel && td.dataset.note.split("||").includes(lineLabel));
+          });
         });
         card.addEventListener("mouseout", (e) => {
           if (!card.contains(e.relatedTarget)) {
             note.querySelectorAll(".item").forEach(el => el.classList.remove("on"));
+            card.querySelectorAll("td.lit").forEach(td => td.classList.remove("lit"));
           }
         });
 
