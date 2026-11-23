@@ -419,6 +419,21 @@
     body.month-only .month.sel { display: block; max-width: 520px; width: 100%; margin: 0 auto; }
     body.month-only .grid { grid-template-columns: 1fr; }
     @media print { .month { display: block !important; } }
+    /* Modo Mês: calendário mais amplo */
+    body.month-only .month.sel { max-width: 980px; padding: 26px 30px 22px; }
+    body.month-only .month h2 { font-size: 36px; margin-bottom: 14px; }
+    body.month-only table.cal { font-size: 17px; border-spacing: 8px 10px; }
+    body.month-only table.cal th { font-size: 13px; padding-bottom: 10px; }
+    body.month-only table.cal td { height: 66px; }
+    body.month-only .notes { font-size: 14px; line-height: 1.6; column-count: 2; column-gap: 32px; }
+    body.month-only .notes .item { break-inside: avoid; }
+    @media (max-width: 640px) {
+      body.month-only .month.sel { padding: 16px 10px 14px; }
+      body.month-only .month h2 { font-size: 30px; }
+      body.month-only table.cal { font-size: 15px; border-spacing: 4px 6px; }
+      body.month-only table.cal td { height: 48px; }
+      body.month-only .notes { column-count: 1; font-size: 13px; }
+    }
   </style>
 </head>
 <body>
