@@ -434,6 +434,22 @@
       body.month-only table.cal td { height: 48px; }
       body.month-only .notes { column-count: 1; font-size: 13px; }
     }
+    /* Modo Mês: mais largo, sem textos extras */
+    body.month-only header.hero, body.month-only footer { display: none; }
+    body.month-only .month.sel { max-width: 1200px; padding: 30px 40px 28px; }
+    body.month-only .month h2 { font-size: 44px; }
+    body.month-only table.cal { font-size: 21px; border-spacing: 10px 12px; }
+    body.month-only table.cal th { font-size: 15px; }
+    body.month-only table.cal td { height: 84px; }
+    body.month-only .notes { font-size: 16px; column-gap: 48px; }
+    @media (max-width: 640px) {
+      body.month-only header.hero, body.month-only footer { display: none; }
+      body.month-only .month.sel { padding: 16px 10px 14px; }
+      body.month-only .month h2 { font-size: 30px; }
+      body.month-only table.cal { font-size: 15px; border-spacing: 4px 6px; }
+      body.month-only table.cal td { height: 48px; }
+      body.month-only .notes { column-count: 1; font-size: 13px; }
+    }
   </style>
 </head>
 <body>
