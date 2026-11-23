@@ -903,13 +903,22 @@ const ASTRO = {
     const now = new Date();
     let monthIdx = now.getFullYear() === 2026 ? now.getMonth() : now.getFullYear() === 2027 ? 12 + now.getMonth() : 0;
     const monthSelect = document.getElementById("month-select");
-    allMonths().forEach((m, i) => {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = MONTHS[i % 12] + " " + (i < 12 ? 2026 : 2027);
-      monthSelect.appendChild(opt);
-    });
 
+    // O filtro segue o ano escolhido na barra (2026, 2027 ou os dois)
+    function populateMonths() {
+      const active = document.querySelector(".years button.active");
+      const y = active ? active.dataset.year : "both";
+      const [from, to] = y === "2026" ? [0, 11] : y === "2027" ? [12, 23] : [0, 23];
+      monthSelect.innerHTML = "";
+      for (let i = from; i <= to; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = MONTHS[i % 12] + " " + (i < 12 ? 2026 : 2027);
+        monthSelect.appendChild(opt);
+      }
+      if (monthIdx < from || monthIdx > to) monthIdx = from;
+      monthSelect.value = String(monthIdx);
+    }
     function showMonth() {
       allMonths().forEach((m, i) => m.classList.toggle("sel", i === monthIdx));
       monthSelect.value = String(monthIdx);
@@ -919,7 +928,7 @@ const ASTRO = {
       document.querySelector(".month-nav").hidden = v !== "month";
       document.querySelector(".years").hidden = v === "month";
       document.querySelectorAll(".view-toggle button").forEach(b => b.classList.toggle("active", b.dataset.view === v));
-      if (v === "month") showMonth();
+      if (v === "month") { populateMonths(); showMonth(); }
     }
     document.querySelectorAll(".view-toggle button").forEach(btn => {
       btn.addEventListener("click", () => setView(btn.dataset.view));
