@@ -399,6 +399,22 @@
     .notes .item.eclipse { color: #8a4a00; }
     .notes .item.eclipse::before { color: #e08a3c; }
     footer { color: #7a8296; }
+    .view-toggle { margin-top: 10px; }
+    .month-nav { margin: 6px 0 4px; }
+    .mlabel {
+      min-width: 190px;
+      text-align: center;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 24px;
+      color: #1c2230;
+    }
+    .month-nav button { font-size: 18px; line-height: 1; padding: 6px 16px; }
+    body.month-only .year-block { display: block !important; }
+    body.month-only .year-title { display: none; }
+    body.month-only .month { display: none; }
+    body.month-only .month.sel { display: block; max-width: 520px; width: 100%; margin: 0 auto; }
+    body.month-only .grid { grid-template-columns: 1fr; }
+    @media print { .month { display: block !important; } }
   </style>
 </head>
 <body>
@@ -409,10 +425,19 @@
       <p class="sub">Feriados nacionais e municipais de São Paulo, recessos acadêmico-administrativos da PUC-SP e datas comemorativas.</p>
     </header>
 
-    <div class="toolbar">
+    <div class="toolbar years">
       <button class="active" data-year="2026">2026</button>
       <button data-year="2027">2027</button>
       <button data-year="both">Ver os dois anos</button>
+    </div>
+    <div class="toolbar view-toggle">
+      <button class="active" data-view="year">Ano</button>
+      <button data-view="month">Mês</button>
+    </div>
+    <div class="toolbar month-nav" hidden>
+      <button type="button" id="prev-month" aria-label="Mês anterior">‹</button>
+      <span id="mlabel" class="mlabel"></span>
+      <button type="button" id="next-month" aria-label="Próximo mês">›</button>
     </div>
 
     <div class="legend">
@@ -860,7 +885,7 @@ const ASTRO = {
     }
     renderAll();
 
-    document.querySelectorAll(".toolbar button").forEach(btn => {
+    document.querySelectorAll(".years button").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".toolbar button").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
@@ -869,6 +894,32 @@ const ASTRO = {
         document.getElementById("y2027").classList.toggle("show", y === "2027" || y === "both");
       });
     });
+
+    // ---- Modo Ano / Mês ----
+    const allMonths = () => [...document.querySelectorAll("#grid-2026 .month"), ...document.querySelectorAll("#grid-2027 .month")];
+    const now = new Date();
+    let monthIdx = now.getFullYear() === 2026 ? now.getMonth() : now.getFullYear() === 2027 ? 12 + now.getMonth() : 0;
+
+    function showMonth() {
+      const ms = allMonths();
+      ms.forEach((m, i) => m.classList.toggle("sel", i === monthIdx));
+      const y = monthIdx < 12 ? 2026 : 2027;
+      document.getElementById("mlabel").textContent = MONTHS[monthIdx % 12] + " " + y;
+      document.getElementById("prev-month").disabled = monthIdx === 0;
+      document.getElementById("next-month").disabled = monthIdx === ms.length - 1;
+    }
+    function setView(v) {
+      document.body.classList.toggle("month-only", v === "month");
+      document.querySelector(".month-nav").hidden = v !== "month";
+      document.querySelector(".years").hidden = v === "month";
+      document.querySelectorAll(".view-toggle button").forEach(b => b.classList.toggle("active", b.dataset.view === v));
+      if (v === "month") showMonth();
+    }
+    document.querySelectorAll(".view-toggle button").forEach(btn => {
+      btn.addEventListener("click", () => setView(btn.dataset.view));
+    });
+    document.getElementById("prev-month").addEventListener("click", () => { if (monthIdx > 0) { monthIdx--; showMonth(); } });
+    document.getElementById("next-month").addEventListener("click", () => { if (monthIdx < 23) { monthIdx++; showMonth(); } });
   </script>
 </body>
 </html>
